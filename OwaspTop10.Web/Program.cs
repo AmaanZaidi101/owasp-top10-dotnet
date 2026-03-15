@@ -1,6 +1,12 @@
+using OwaspTop10.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
+builder.Services.AddSingleton<OwaspCatalogService>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
