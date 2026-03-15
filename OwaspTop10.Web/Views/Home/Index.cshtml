@@ -1,8 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<OwaspTop10.Web.Models.OwaspItem>
+
+@{
+    ViewData["Title"] = "OWASP Top 10 2025 — Vulnerability Lab";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">🔐 OWASP Top 10 2025</h1>
+        <p class="lead text-muted">
+            An interactive .NET 10 MVC lab demonstrating each vulnerability and its fix.
+        </p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header d-flex justify-content-between align-items-center
+                                    @(item.RiskRating == "Critical" ? "bg-danger text-white" :
+                                                           item.RiskRating == "High" ? "bg-warning text-dark" :
+                                                                                           "bg-secondary text-white")">
+                        <span class="fw-bold">@item.Id — @item.Title</span>
+                        <span class="badge bg-white
+                                         @(item.RiskRating == "Critical" ? "text-danger" :
+                                                                     item.RiskRating == "High" ? "text-warning" :
+                                                                                                     "text-secondary")">
+                            @item.RiskRating
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-muted small">@item.Description</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center bg-white border-top-0">
+                        @if (item.IsImplemented)
+                        {
+                            <span class="badge bg-success">✅ Implemented</span>
+                            <a asp-controller="@item.ControllerName" asp-action="Index"
+                               class="btn btn-sm btn-outline-primary">
+                                View Demo →
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="badge bg-light text-muted border">🔜 Coming Soon</span>
+                            <button class="btn btn-sm btn-outline-secondary" disabled>View Demo</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-5 text-muted small">
+        Built with ASP.NET Core 10 MVC &nbsp;|&nbsp;
+        <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10 Official Docs</a>
+    </div>
+
 </div>

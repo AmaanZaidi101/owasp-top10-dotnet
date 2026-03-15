@@ -1,24 +1,21 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using OwaspTop10.Web.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using OwaspTop10.Web.Services;
 
-namespace OwaspTop10.Web.Controllers;
-
-public class HomeController : Controller
+namespace OwaspTop10.Web.Controllers
 {
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        return View();
-    }
+        private readonly OwaspCatalogService _catalog;
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        public HomeController(OwaspCatalogService catalog)
+        {
+            _catalog = catalog;
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult Index()
+        {
+            var items = _catalog.GetAll();
+            return View(items);
+        }
     }
 }
